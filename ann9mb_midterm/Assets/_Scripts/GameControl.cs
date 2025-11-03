@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class GameControl : MonoBehaviour
 {
@@ -10,10 +11,23 @@ public class GameControl : MonoBehaviour
     public float spawnHeight = 6f;     // world Y position for top of screen
     public float xRange = 7f;          // horizontal range for random spawn position
 
+    public TextMeshProUGUI projectile1Text;
+    public TextMeshProUGUI projectile2Text;
+    public TextMeshProUGUI projectile3Text;
+    public TextMeshProUGUI cratesText;
+
+    
+
     private void Start()
     {
         // start spawning repeatedly
         InvokeRepeating(nameof(SpawnObject), 1f, spawnInterval);
+
+        LevelManager.projectile1Text = this.projectile1Text;
+        LevelManager.projectile2Text = this.projectile2Text;
+        LevelManager.projectile3Text = this.projectile3Text;
+        LevelManager.cratesText = this.cratesText;
+
     }
 
     void SpawnObject()

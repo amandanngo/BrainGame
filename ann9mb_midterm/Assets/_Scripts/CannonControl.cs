@@ -7,7 +7,10 @@ public class CannonControl : MonoBehaviour
     float angle = 0f;
 
     [Header("Projectile Settings")]
-    public GameObject projectilePrefab;
+    public GameObject projectilePrefab1;
+    public GameObject projectilePrefab2;
+    public GameObject projectilePrefab3;
+
     public float projectileSpeed = 10f;   // Speed of the projectile
     public float cannonLength = 2f;       // Distance from pivot to cannon tip
 
@@ -28,36 +31,34 @@ public class CannonControl : MonoBehaviour
         // Fire when pressing S
         if (Input.GetKeyDown(KeyCode.S))
         {
-            Fire();
+            Fire("Projectile1",projectilePrefab1);
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Fire("Projectile2",projectilePrefab2);
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Fire("Projectile3",projectilePrefab3);
         }
     }
 
-    void Fire()
+    void Fire(string projectileType, GameObject projectilePrefab)
     {
-        if (projectilePrefab == null)
+        // Check ammo via static LevelManager
+        if (LevelManager.UseProjectile(projectileType))
         {
-            Debug.LogWarning("Projectile Prefab not assigned!");
-            return;
-        }
-
-        // Determine shooting direction (the cannon’s local up direction)
-        Vector3 shootDirection = transform.up;
-
-        // Calculate the spawn position (at the tip of the cannon)
-        Vector3 spawnPos = transform.position + shootDirection * cannonLength;
-
-        // Instantiate projectile and set position
-        GameObject projGO = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-
-        // Apply velocity to projectile’s Rigidbody
-        Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
-        if (rigidB != null)
-        {
-            rigidB.velocity = shootDirection * projectileSpeed;
+            // Shoot normally
+            Vector3 shootDirection = transform.up;
+            Vector3 spawnPos = transform.position + shootDirection * cannonLength;
+            GameObject projGO = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+            Rigidbody rigidB = projGO.GetComponent<Rigidbody>();
+            if (rigidB != null) rigidB.velocity = shootDirection * projectileSpeed;
         }
         else
         {
-            Debug.LogWarning("Projectile prefab has no Rigidbody component!");
+            Debug.Log("No ammo left for " + projectileType);
         }
     }
+
 }

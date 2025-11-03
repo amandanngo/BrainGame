@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Projectile1
+  - Projectile2
+  - Projectile3
   layers:
   - Default
   - TransparentFX
